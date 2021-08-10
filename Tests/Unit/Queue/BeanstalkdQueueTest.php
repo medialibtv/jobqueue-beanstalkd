@@ -15,6 +15,7 @@ use Flowpack\JobQueue\Beanstalkd\Queue\BeanstalkdQueue;
 use Pheanstalk\Pheanstalk;
 use Pheanstalk\PheanstalkInterface;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Constraint\IsAnything;
 
 /**
  * Queue manager
@@ -32,7 +33,7 @@ class BeanstalkdQueueTest extends UnitTestCase
      */
     protected $mockClient;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->beanstalkdQueue = new BeanstalkdQueue('TestQueue');
 
@@ -61,7 +62,7 @@ class BeanstalkdQueueTest extends UnitTestCase
     public function submitRespectsPriorityOption()
     {
         $somePriority = 1337;
-        $this->mockClient->expects($this->once())->method('putInTube')->with(new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), $somePriority);
+        $this->mockClient->expects($this->once())->method('putInTube')->with(new IsAnything(), new IsAnything(), $somePriority);
         $this->beanstalkdQueue->submit('somePayload', ['priority' => $somePriority]);
     }
 
@@ -70,7 +71,7 @@ class BeanstalkdQueueTest extends UnitTestCase
      */
     public function submitSetsDefaultPriorityIfNotSpecified()
     {
-        $this->mockClient->expects($this->once())->method('putInTube')->with(new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), PheanstalkInterface::DEFAULT_PRIORITY);
+        $this->mockClient->expects($this->once())->method('putInTube')->with(new IsAnything(), new IsAnything(), PheanstalkInterface::DEFAULT_PRIORITY);
         $this->beanstalkdQueue->submit('somePayload');
     }
 
@@ -80,7 +81,7 @@ class BeanstalkdQueueTest extends UnitTestCase
     public function submitRespectsDelayOption()
     {
         $someDelay = 42;
-        $this->mockClient->expects($this->once())->method('putInTube')->with(new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), $someDelay);
+        $this->mockClient->expects($this->once())->method('putInTube')->with(new IsAnything(), new IsAnything(), new IsAnything(), $someDelay);
         $this->beanstalkdQueue->submit('somePayload', ['delay' => $someDelay]);
     }
 
@@ -89,7 +90,7 @@ class BeanstalkdQueueTest extends UnitTestCase
      */
     public function submitSetsDefaultDelayIfNotSpecified()
     {
-        $this->mockClient->expects($this->once())->method('putInTube')->with(new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), PheanstalkInterface::DEFAULT_DELAY);
+        $this->mockClient->expects($this->once())->method('putInTube')->with(new IsAnything(), new IsAnything(), new IsAnything(), PheanstalkInterface::DEFAULT_DELAY);
         $this->beanstalkdQueue->submit('somePayload');
     }
 
@@ -100,7 +101,7 @@ class BeanstalkdQueueTest extends UnitTestCase
     public function submitRespectsTtrOption()
     {
         $someTtr = 123;
-        $this->mockClient->expects($this->once())->method('putInTube')->with(new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), $someTtr);
+        $this->mockClient->expects($this->once())->method('putInTube')->with(new IsAnything(), new IsAnything(), new IsAnything(), new IsAnything(), $someTtr);
         $this->beanstalkdQueue->submit('somePayload', ['ttr' => $someTtr]);
     }
 
@@ -109,7 +110,7 @@ class BeanstalkdQueueTest extends UnitTestCase
      */
     public function submitSetsDefaultTtrIfNotSpecified()
     {
-        $this->mockClient->expects($this->once())->method('putInTube')->with(new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), new \PHPUnit_Framework_Constraint_IsAnything(), PheanstalkInterface::DEFAULT_TTR);
+        $this->mockClient->expects($this->once())->method('putInTube')->with(new IsAnything(), new IsAnything(), new IsAnything(), new IsAnything(), PheanstalkInterface::DEFAULT_TTR);
         $this->beanstalkdQueue->submit('somePayload');
     }
 }
